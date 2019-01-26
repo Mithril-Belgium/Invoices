@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B5214091
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mithril.Invoices.Domain", "src\Mithril.Invoices.Domain\Mithril.Invoices.Domain.csproj", "{9E6FD617-E4C8-40A0-B223-8E0906E5DA10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mithril.Invoices.Domain.Tests", "Tests\Mithril.Invoices.Domain.Tests\Mithril.Invoices.Domain.Tests.csproj", "{66E903AD-F1BA-45E6-B9D2-27F4E8195AE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mithril.Invoices.Domain.Tests", "tests\Mithril.Invoices.Domain.Tests\Mithril.Invoices.Domain.Tests.csproj", "{66E903AD-F1BA-45E6-B9D2-27F4E8195AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
