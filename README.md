@@ -1,1 +1,1 @@
-# Invoices
+![Build Status](https://dev.azure.com/Mithril-Belgium/Mithril.Invoices/_apis/build/status/Mithril-Belgium.Invoices?branchName=master)
