@@ -1,11 +1,12 @@
 ﻿using Mithril.Invoices.Domain.Core;
+using System.Threading.Tasks;
 
 namespace Mithril.Invoices.Infrastructure
 {
     public interface IEventStore
     {
-        IDomainEvent[] GetEvents<TId>(TId id);
+        Task<IDomainEvent[]> GetEventsAsync<TId>(TId id);
 
-        void SaveEvents(IDomainEvent[] events);
+        Task SaveEventsAsync<TId>(TId id, IDomainEvent[] events);
     }
 }
