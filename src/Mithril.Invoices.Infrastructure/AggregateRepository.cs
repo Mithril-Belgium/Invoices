@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Mithril.Invoices.Infrastructure
             _eventStore = eventStore;
         }
 
-        public async Task Save(T aggregateRoot)
+        public async Task SaveAsync(T aggregateRoot)
         {
             await _eventStore.SaveEventsAsync(aggregateRoot.Id, 
                 aggregateRoot.PendingEvents.ToArray());
@@ -25,9 +26,13 @@ namespace Mithril.Invoices.Infrastructure
             aggregateRoot.ClearPendingEvents();
         }
 
-        public async Task<T> GetById(TId id)
+        public async Task<T> GetByIdAsync(TId id)
         {
-            T aggregateRoot = Activator.CreateInstance<T>();
+            T aggregateRoot = (T)typeof(T)
+                    .GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                        null, new Type[0], new ParameterModifier[0])
+                    .Invoke(new object[0]);
+
             var domainEvents = await _eventStore.GetEventsAsync(id);
 
             foreach(var domainEvent in domainEvents)

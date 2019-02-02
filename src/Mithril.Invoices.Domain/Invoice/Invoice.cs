@@ -1,15 +1,17 @@
 ﻿using Mithril.Invoices.Domain.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mithril.Invoices.Domain.Invoice
 {
     public class Invoice : AggregateRoot<Guid>
     {
-        public Invoice()
+        public Invoice(Guid guid)
         {
-            RaiseEvent(new InvoiceCreated(Guid.NewGuid()));
+            RaiseEvent(new InvoiceCreated(guid));
+        }
+
+        private Invoice()
+        {
         }
 
         internal void ApplyEvent(InvoiceCreated @event)

@@ -12,7 +12,7 @@ namespace Mithril.Invoices.Domain.Tests.Invoice
         public void InvoiceCreationShouldGenerateInvoiceCreatedEvent()
         {
             // Act
-            var invoice = new Domain.Invoice.Invoice();
+            var invoice = new Domain.Invoice.Invoice(Guid.NewGuid());
 
             // Assert
             invoice.PendingEvents.Should().HaveCount(1);
@@ -23,7 +23,7 @@ namespace Mithril.Invoices.Domain.Tests.Invoice
         public void InvoiceCreatedShouldHaveAnId()
         {
             // Act
-            var invoice = new Domain.Invoice.Invoice();
+            var invoice = new Domain.Invoice.Invoice(Guid.NewGuid());
 
             // Assert
             invoice.Id.Should().NotBe(default(Guid));

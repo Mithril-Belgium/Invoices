@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EventStore.ClientAPI;
+using JsonNet.PrivateSettersContractResolvers;
 using Mithril.Invoices.Domain.Core;
+using Mithril.Invoices.Domain.Invoice;
 using Newtonsoft.Json;
 
 namespace Mithril.Invoices.Infrastructure
@@ -31,9 +33,13 @@ namespace Mithril.Invoices.Infrastructure
             {
                 domainEvents[i] = (IDomainEvent)JsonConvert.DeserializeObject(
                 Encoding.UTF8.GetString(eventSlice.Events[i].Event.Data),
-                typeof(int));
+                Type.GetType(eventSlice.Events[i].Event.EventType),
+                new JsonSerializerSettings()
+                {
+                    ContractResolver = new PrivateSetterContractResolver()
+                });
             }
-
+            
             return domainEvents;
         }
 
@@ -51,7 +57,7 @@ namespace Mithril.Invoices.Infrastructure
         {
             return domainEvents.Select(domainEvent => new EventData(
                 Guid.NewGuid(),
-                domainEvent.GetType().ToString(),
+                domainEvent.GetType().AssemblyQualifiedName,
                 true,
                 Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(domainEvent)),
                 new byte[0])).ToArray();

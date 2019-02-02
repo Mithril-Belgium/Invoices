@@ -5,11 +5,16 @@ namespace Mithril.Invoices.Domain.Invoice
 {
     public class InvoiceCreated : IDomainEvent
     {
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
 
         public InvoiceCreated(Guid id)
         {
             Id = id;
+        }
+
+        public InvoiceCreated()
+        {
+
         }
     }
 }
