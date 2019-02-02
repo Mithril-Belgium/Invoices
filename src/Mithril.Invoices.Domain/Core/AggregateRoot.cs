@@ -6,13 +6,11 @@ namespace Mithril.Invoices.Domain.Core
 {
     public class AggregateRoot<TId> : IAggregateRoot<TId>
     {
-        public TId Id { get; }
+        public TId Id { get; protected set; }
 
-        private List<IDomainEvent<TId>> _pendingEvents;
+        private List<IDomainEvent> _pendingEvents;
 
-        public IReadOnlyList<IDomainEvent<TId>> PendingEvents => _pendingEvents.AsReadOnly();
-
-        private IDictionary<string, Action<IDomainEvent<TId>>> _applyEvents;
+        public IReadOnlyList<IDomainEvent> PendingEvents => _pendingEvents.AsReadOnly();
 
         public void ClearPendingEvents()
         {
@@ -21,20 +19,18 @@ namespace Mithril.Invoices.Domain.Core
 
         public AggregateRoot()
         {
-            _pendingEvents = new List<IDomainEvent<TId>>();
+            _pendingEvents = new List<IDomainEvent>();
         }
 
-        public void RaiseEvent(IDomainEvent<TId> domainEvent)
+        public void RaiseEvent(IDomainEvent domainEvent)
         {
             _pendingEvents.Add(domainEvent);
             ApplyEventToAggregate(domainEvent);
         }
 
-        private void ApplyEventToAggregate(IDomainEvent<TId> domainEvent)
+        private void ApplyEventToAggregate(IDomainEvent domainEvent)
         {
-            dynamic thisObject = this;
-
-            thisObject.ApplyEvent(domainEvent);
+            ((dynamic)this).ApplyEvent((dynamic)domainEvent);
         }
     }
 }
