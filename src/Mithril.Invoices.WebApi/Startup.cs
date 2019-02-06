@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
 
 namespace Mithril.Invoices.WebApi
 {
@@ -26,6 +28,13 @@ namespace Mithril.Invoices.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            Container container = new Container();
+
+            container.Options.DefaultLifestyle = new AsyncScopedLifestyle();
+
+            services.EnableSimpleInjectorCrossWiring(container);
+            services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
