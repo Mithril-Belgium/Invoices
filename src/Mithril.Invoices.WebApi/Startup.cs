@@ -43,7 +43,7 @@ namespace Mithril.Invoices.WebApi
 
             container.Register<IEventStore, Infrastructure.EventStore>();
             container.Register(typeof(IAggregateRepository<,>), typeof(AggregateRepository<,>));
-            container.Register<ICommandHandler<InvoiceCreationCommand, Guid>, InvoiceCreationCommandHandler>();
+            container.Register(typeof(ICommandHandler<,>), typeof(ICommandHandler<,>).Assembly);
             container.Register<InvoicesController>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
