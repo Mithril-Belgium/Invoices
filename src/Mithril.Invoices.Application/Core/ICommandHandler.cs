@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Mithril.Invoices.Application.Core
 {
     public interface ICommandHandler<TCommand> 
         where TCommand : ICommand
     {
-        void Process(TCommand command);
+        Task ProcessAsync(TCommand command);
     }
 
     public interface ICommandHandler<TCommand, TResult>
         where TCommand : ICommand
     {
-        TResult Process(TCommand command);
+        Task<TResult> ProcessAsync(TCommand command);
     }
 }

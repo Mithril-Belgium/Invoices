@@ -4,13 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Mithril.Invoices.Application.Core;
+using Mithril.Invoices.Application.InvoiceCreation;
+using Mithril.Invoices.Infrastructure;
+using Mithril.Invoices.WebApi.Controllers;
 using SimpleInjector;
+using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 
 namespace Mithril.Invoices.WebApi
@@ -32,6 +40,20 @@ namespace Mithril.Invoices.WebApi
             Container container = new Container();
 
             container.Options.DefaultLifestyle = new AsyncScopedLifestyle();
+
+            container.Register<IEventStore, Infrastructure.EventStore>();
+            container.Register(typeof(IAggregateRepository<,>), typeof(AggregateRepository<,>));
+            container.Register<ICommandHandler<InvoiceCreationCommand, Guid>, InvoiceCreationCommandHandler>();
+            container.Register<InvoicesController>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddSingleton<IControllerActivator>(
+                new SimpleInjectorControllerActivator(container));
+            services.AddSingleton<IViewComponentActivator>(
+                new SimpleInjectorViewComponentActivator(container));
+
+
 
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
