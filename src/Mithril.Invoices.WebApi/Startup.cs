@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventStore.ClientAPI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +44,9 @@ namespace Mithril.Invoices.WebApi
 
             container.Register<IEventStore, Infrastructure.EventStore>();
             container.Register(typeof(IAggregateRepository<,>), typeof(AggregateRepository<,>));
+            var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
+
+            container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl)));
             container.Register(typeof(ICommandHandler<,>), typeof(ICommandHandler<,>).Assembly);
             container.Register<InvoicesController>();
 
