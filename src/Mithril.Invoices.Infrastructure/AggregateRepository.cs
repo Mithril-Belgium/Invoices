@@ -1,4 +1,5 @@
-﻿using Mithril.Invoices.Domain.Core;
+﻿using Mithril.Invoices.Application.Core;
+using Mithril.Invoices.Domain.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Mithril.Invoices.Infrastructure
 {
-    public class AggregateRepository<T, TId>
+    public class AggregateRepository<T, TId> : IAggregateRepository<T, TId>
         where T : AggregateRoot<TId>
     {
         private readonly IEventStore _eventStore;
