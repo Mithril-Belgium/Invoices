@@ -12,9 +12,9 @@ namespace Mithril.Invoices.WebApi.Controllers
     [ApiController]
     public class InvoicesController : ControllerBase
     {
-        private readonly ICommandHandler<InvoiceCreationCommand, Guid> _invoiceCreationHandler;
+        private readonly ICommandHandler<InvoiceCreationCommand> _invoiceCreationHandler;
 
-        public InvoicesController(ICommandHandler<InvoiceCreationCommand, Guid> invoiceCreationHandler)
+        public InvoicesController(ICommandHandler<InvoiceCreationCommand> invoiceCreationHandler)
         {
             _invoiceCreationHandler = invoiceCreationHandler;
         }
@@ -24,9 +24,9 @@ namespace Mithril.Invoices.WebApi.Controllers
         {
             var command = new InvoiceCreationCommand(Guid.NewGuid());
 
-            var id = await _invoiceCreationHandler.ProcessAsync(command);
+            await _invoiceCreationHandler.ProcessAsync(command);
 
-            return Ok(id);
+            return Ok(command.Id);
         }
     }
 }

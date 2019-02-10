@@ -10,10 +10,4 @@ namespace Mithril.Invoices.Application.Core
     {
         Task ProcessAsync(TCommand command);
     }
-
-    public interface ICommandHandler<TCommand, TResult>
-        where TCommand : ICommand
-    {
-        Task<TResult> ProcessAsync(TCommand command);
-    }
 }

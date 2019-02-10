@@ -47,7 +47,7 @@ namespace Mithril.Invoices.WebApi
             var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
 
             container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl)));
-            container.Register(typeof(ICommandHandler<,>), typeof(ICommandHandler<,>).Assembly);
+            container.Register(typeof(ICommandHandler<>), typeof(ICommandHandler<>).Assembly);
             container.Register<InvoicesController>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
