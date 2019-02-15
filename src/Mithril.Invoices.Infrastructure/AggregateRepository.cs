@@ -25,6 +25,7 @@ namespace Mithril.Invoices.Infrastructure
                 aggregateRoot.PendingEvents.ToArray());
 
             aggregateRoot.ClearPendingEvents();
+
         }
 
         public async Task<T> GetByIdAsync(TId id)
