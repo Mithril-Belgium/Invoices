@@ -1,5 +1,6 @@
 ﻿using Mithril.Invoices.Application.Core;
 using Mithril.Invoices.Domain.Core;
+using Mithril.Invoices.Infrastructure.Bus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace Mithril.Invoices.Infrastructure
         where T : AggregateRoot<TId>
     {
         private readonly IEventStore _eventStore;
+        private readonly IMessageBus<T, TId> _messageBus;
 
-        public AggregateRepository(IEventStore eventStore)
+        public AggregateRepository(IEventStore eventStore, IMessageBus<T, TId> messageBus)
         {
             _eventStore = eventStore;
+            _messageBus = messageBus;
         }
 
         public async Task SaveAsync(T aggregateRoot)
@@ -24,8 +27,9 @@ namespace Mithril.Invoices.Infrastructure
             await _eventStore.SaveEventsAsync(aggregateRoot.Id, 
                 aggregateRoot.PendingEvents.ToArray());
 
-            aggregateRoot.ClearPendingEvents();
+            await _messageBus.PublishAsync(aggregateRoot);
 
+            aggregateRoot.ClearPendingEvents();
         }
 
         public async Task<T> GetByIdAsync(TId id)
