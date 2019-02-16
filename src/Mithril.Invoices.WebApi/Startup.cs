@@ -51,6 +51,8 @@ namespace Mithril.Invoices.WebApi
 
             container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl)));
             container.Register(typeof(ICommandHandler<>), typeof(ICommandHandler<>).Assembly);
+            container.Register(typeof(IQueryHandler<,>), typeof(IQueryHandler<,>).Assembly);
+
             container.Register<InvoicesController>();
 
             var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
