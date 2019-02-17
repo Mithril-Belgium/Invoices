@@ -22,7 +22,6 @@ namespace Mithril.Invoices.Infrastructure
 
         public async Task<IDomainEvent[]> GetEventsAsync<TId>(TId id)
         {
-            await _connection.ConnectAsync();
             var readEvents = await _connection.ReadStreamEventsForwardAsync(id.ToString(), 0, 100, true);
             return MapEvents(readEvents);
         }

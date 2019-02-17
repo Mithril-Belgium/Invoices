@@ -49,7 +49,7 @@ namespace Mithril.Invoices.WebApi
             container.Register(typeof(IAggregateRepository<,>), typeof(AggregateRepository<,>));
             var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
 
-            container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl)));
+            container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl), Guid.NewGuid().ToString()));
             container.Register(typeof(ICommandHandler<>), typeof(ICommandHandler<>).Assembly);
             container.Register(typeof(IQueryHandler<,>), typeof(IQueryHandler<,>).Assembly);
 
