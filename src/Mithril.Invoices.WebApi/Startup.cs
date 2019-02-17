@@ -54,6 +54,8 @@ namespace Mithril.Invoices.WebApi
             container.Register(typeof(IQueryHandler<,>), typeof(IQueryHandler<,>).Assembly);
 
             container.Register<InvoicesController>();
+            container.Register<PingController>();
+
 
             var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
             container.Register<IRedisClientsManager>(() => new RedisManagerPool(redisConnectionString));
