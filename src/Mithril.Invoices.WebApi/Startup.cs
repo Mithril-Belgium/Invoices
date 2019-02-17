@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventStore.ClientAPI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,8 +16,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mithril.Invoices.Application.Core;
 using Mithril.Invoices.Application.InvoiceCreation;
+using Mithril.Invoices.Domain.Invoice;
 using Mithril.Invoices.Infrastructure;
+using Mithril.Invoices.Infrastructure.Bus;
 using Mithril.Invoices.WebApi.Controllers;
+using ServiceStack.Redis;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -43,8 +47,21 @@ namespace Mithril.Invoices.WebApi
 
             container.Register<IEventStore, Infrastructure.EventStore>();
             container.Register(typeof(IAggregateRepository<,>), typeof(AggregateRepository<,>));
-            container.Register(typeof(ICommandHandler<,>), typeof(ICommandHandler<,>).Assembly);
+            var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
+
+            container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl), Guid.NewGuid().ToString()));
+            container.Register(typeof(ICommandHandler<>), typeof(ICommandHandler<>).Assembly);
+            container.Register(typeof(IQueryHandler<,>), typeof(IQueryHandler<,>).Assembly);
+
             container.Register<InvoicesController>();
+            container.Register<PingController>();
+
+
+            var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
+            container.Register<IRedisClientsManager>(() => new RedisManagerPool(redisConnectionString));
+            container.Register<ISubscriber<Invoice, Guid>, RedisInvoiceSubscriber>();
+            container.Collection.Register(typeof(ISubscriber<,>), typeof(ISubscriber<,>).Assembly);
+            container.Register<IMessageBus<Invoice, Guid>, MessageBus<Invoice, Guid>>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

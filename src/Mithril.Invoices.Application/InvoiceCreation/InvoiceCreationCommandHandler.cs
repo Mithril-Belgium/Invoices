@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Mithril.Invoices.Application.InvoiceCreation
 {
-    public class InvoiceCreationCommandHandler : ICommandHandler<InvoiceCreationCommand, Guid>
+    public class InvoiceCreationCommandHandler : ICommandHandler<InvoiceCreationCommand>
     {
         private readonly IAggregateRepository<Invoice, Guid> _invoiceRepository;
 
@@ -16,13 +16,11 @@ namespace Mithril.Invoices.Application.InvoiceCreation
             _invoiceRepository = invoiceRepository;
         }
 
-        public async Task<Guid> ProcessAsync(InvoiceCreationCommand command)
+        public async Task ProcessAsync(InvoiceCreationCommand command)
         {
             var invoice = new Invoice(command.Id);
 
             await _invoiceRepository.SaveAsync(invoice);
-
-            return invoice.Id;
         }
     }
 }

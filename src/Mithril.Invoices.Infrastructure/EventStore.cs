@@ -13,19 +13,20 @@ namespace Mithril.Invoices.Infrastructure
 {
     public class EventStore : IEventStore
     {
-        private readonly Uri _eventStoreUri = new Uri("tcp://admin:changeit@localhost:1113");
+        private readonly IEventStoreConnection _connection;
+
+        public EventStore(IEventStoreConnection connection)
+        {
+            _connection = connection;
+        }
 
         public async Task<IDomainEvent[]> GetEventsAsync<TId>(TId id)
         {
-            using (var connection = EventStoreConnection.Create(_eventStoreUri))
-            {
-                await connection.ConnectAsync();
-                var readEvents = await connection.ReadStreamEventsForwardAsync(id.ToString(), 0, 100, true);
-                return GetEvents(readEvents);
-            }
+            var readEvents = await _connection.ReadStreamEventsForwardAsync(id.ToString(), 0, 100, true);
+            return MapEvents(readEvents);
         }
 
-        private IDomainEvent[] GetEvents(StreamEventsSlice eventSlice)
+        private IDomainEvent[] MapEvents(StreamEventsSlice eventSlice)
         {
             IDomainEvent[] domainEvents = new IDomainEvent[eventSlice.Events.Length];
 
@@ -45,15 +46,12 @@ namespace Mithril.Invoices.Infrastructure
 
         public async Task SaveEventsAsync<TId>(TId id, IDomainEvent[] domainEvents)
         {
-            using (var connection = EventStoreConnection.Create(_eventStoreUri))
-            {
-                await connection.ConnectAsync();
-                EventData[] events = GetEvents(domainEvents);
-                await connection.AppendToStreamAsync(id.ToString(), ExpectedVersion.Any, events);
-            }
+            await _connection.ConnectAsync();
+            EventData[] events = MapEvents(domainEvents);
+            await _connection.AppendToStreamAsync(id.ToString(), ExpectedVersion.Any, events);
         }
 
-        private EventData[] GetEvents(IDomainEvent[] domainEvents)
+        private EventData[] MapEvents(IDomainEvent[] domainEvents)
         {
             return domainEvents.Select(domainEvent => new EventData(
                 Guid.NewGuid(),
