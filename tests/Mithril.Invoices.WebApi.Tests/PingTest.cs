@@ -7,20 +7,17 @@ using Xunit;
 
 namespace Mithril.Invoices.WebApi.Tests
 {
-    public class PingTest : IDisposable
+    public class PingTest : EndToEndTest
     {
-        private readonly IWebHost _webHost;
 
-        public PingTest()
+        public PingTest() : base(50001)
         {
-            _webHost = Program.CreateWebHostBuilder(new string[0])
-                .Start("http://localhost:5001");
         }
 
         [Fact]
         public void PingShouldPong()
         {
-            var client = new RestClient("http://localhost:5001");
+            var client = new RestClient(BaseUrl);
 
             var request = new RestRequest("api/ping", Method.GET);
 
@@ -28,13 +25,6 @@ namespace Mithril.Invoices.WebApi.Tests
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Should().Be("\"pong\"");
-        }
-
-
-        public void Dispose()
-        {
-            _webHost.StopAsync().Wait();
-            _webHost.Dispose();
         }
     }
 }
