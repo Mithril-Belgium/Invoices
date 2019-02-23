@@ -14,7 +14,8 @@ namespace Mithril.Invoices.Infrastructure.Tests
         public void CanSaveAndGetSavedAggregate()
         {
             // Arrange
-            var aggregateRepository = new AggregateRepository<Invoice, Guid>(new EventStore(EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"))), 
+            var eventStore = new EventStore(EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113")));
+            var aggregateRepository = new AggregateRepository<Invoice, Guid>(eventStore, 
                 new Mock<IMessageBus<Invoice, Guid>>().Object);
             var invoice = new Invoice(Guid.NewGuid());
 

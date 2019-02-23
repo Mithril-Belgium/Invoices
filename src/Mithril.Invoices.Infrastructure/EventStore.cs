@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,19 @@ namespace Mithril.Invoices.Infrastructure
     {
         private readonly IEventStoreConnection _connection;
 
+        private bool IsConnected;
+
         public EventStore(IEventStoreConnection connection)
         {
             _connection = connection;
+            _connection.Connected += (sender, e) => IsConnected = true;
+            _connection.Disconnected += (sender, e) => IsConnected = false;
+
         }
 
         public async Task<IDomainEvent[]> GetEventsAsync<TId>(TId id)
         {
+            await Connect();
             var readEvents = await _connection.ReadStreamEventsForwardAsync(id.ToString(), 0, 100, true);
             return MapEvents(readEvents);
         }
@@ -46,8 +53,9 @@ namespace Mithril.Invoices.Infrastructure
 
         public async Task SaveEventsAsync<TId>(TId id, IDomainEvent[] domainEvents)
         {
-            await _connection.ConnectAsync();
             EventData[] events = MapEvents(domainEvents);
+
+            await Connect();
             await _connection.AppendToStreamAsync(id.ToString(), ExpectedVersion.Any, events);
         }
 
@@ -59,6 +67,19 @@ namespace Mithril.Invoices.Infrastructure
                 true,
                 Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(domainEvent)),
                 new byte[0])).ToArray();
+        }
+
+        private async Task Connect()
+        {
+            if (!IsConnected)
+            {
+                await _connection.ConnectAsync();
+            }
+        }
+
+        public void Dispose()
+        {
+            _connection.Dispose();
         }
     }
 }
