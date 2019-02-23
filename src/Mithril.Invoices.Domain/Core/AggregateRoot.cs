@@ -8,6 +8,8 @@ namespace Mithril.Invoices.Domain.Core
     {
         public TId Id { get; protected set; }
 
+        public uint Version { get; private set; }
+
         private List<IDomainEvent> _pendingEvents;
 
         public IReadOnlyList<IDomainEvent> PendingEvents => _pendingEvents.AsReadOnly();
@@ -25,6 +27,7 @@ namespace Mithril.Invoices.Domain.Core
         public void RaiseEvent(IDomainEvent domainEvent)
         {
             _pendingEvents.Add(domainEvent);
+            Version++;
             ApplyEventToAggregate(domainEvent);
         }
 

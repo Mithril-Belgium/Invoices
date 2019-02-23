@@ -7,5 +7,6 @@ namespace Mithril.Invoices.Application.InvoiceConsultation
     public class InvoiceConsultationModel
     {
         public Guid Id { get; set; }
+        public uint Version { get; set; }
     }
 }

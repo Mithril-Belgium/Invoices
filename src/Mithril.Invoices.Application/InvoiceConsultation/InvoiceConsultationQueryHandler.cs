@@ -23,7 +23,10 @@ namespace Mithril.Invoices.Application.InvoiceConsultation
             {
                 var invoice = client.Get<Invoice>(query.Id.ToString());
 
-                return Task.FromResult(new InvoiceConsultationModel() { Id = invoice.Id });
+                return Task.FromResult(new InvoiceConsultationModel() {
+                    Id = invoice.Id,
+                    Version = invoice.Version
+                });
             }
         }
     }
