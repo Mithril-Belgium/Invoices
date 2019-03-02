@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Mithril.Invoices.Infrastructure
 {
-    public class AggregateRepository<T, TId> : IAggregateRepository<T, TId>
+    public class AggregateRepository<T, TId> : IReadAggregateRepository<T, TId>, IWriteAggregateRepository<T, TId>
         where T : AggregateRoot<TId>
     {
         private readonly IEventStore _eventStore;

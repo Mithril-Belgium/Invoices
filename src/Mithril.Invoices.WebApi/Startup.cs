@@ -46,7 +46,9 @@ namespace Mithril.Invoices.WebApi
             container.Options.DefaultLifestyle = new AsyncScopedLifestyle();
 
             container.Register<IEventStore, Infrastructure.EventStore>();
-            container.Register(typeof(IAggregateRepository<,>), typeof(AggregateRepository<,>));
+            container.Register(typeof(IReadAggregateRepository<,>), typeof(AggregateRepository<,>));
+            container.Register(typeof(IWriteAggregateRepository<,>), typeof(AggregateRepository<,>));
+
             var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
 
             container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl), Guid.NewGuid().ToString()));
@@ -55,7 +57,6 @@ namespace Mithril.Invoices.WebApi
 
             container.Register<InvoicesController>();
             container.Register<PingController>();
-
 
             var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
             container.Register<IRedisClientsManager>(() => new RedisManagerPool(redisConnectionString));
@@ -69,8 +70,6 @@ namespace Mithril.Invoices.WebApi
                 new SimpleInjectorControllerActivator(container));
             services.AddSingleton<IViewComponentActivator>(
                 new SimpleInjectorViewComponentActivator(container));
-
-
 
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
