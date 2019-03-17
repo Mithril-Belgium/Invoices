@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector" Version="4.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mithril.Invoices.Application\Mithril.Invoices.Application.csproj" />
+    <ProjectReference Include="..\Mithril.Invoices.Domain\Mithril.Invoices.Domain.csproj" />
+    <ProjectReference Include="..\Mithril.Invoices.Infrastructure\Mithril.Invoices.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

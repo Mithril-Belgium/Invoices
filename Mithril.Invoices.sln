@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mithril.Invoices.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mithril.Invoices.WebApi", "src\Mithril.Invoices.WebApi\Mithril.Invoices.WebApi.csproj", "{24A3AC35-6311-46CD-B635-36948C947967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mithril.Invoices.WebApi.Tests", "tests\Mithril.Invoices.WebApi.Tests\Mithril.Invoices.WebApi.Tests.csproj", "{69B16EBB-3C94-45B4-BB6E-5F0EBF761224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mithril.Invoices.WebApi.Tests", "tests\Mithril.Invoices.WebApi.Tests\Mithril.Invoices.WebApi.Tests.csproj", "{69B16EBB-3C94-45B4-BB6E-5F0EBF761224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mithril.Invoices.Bootstrap", "src\Mithril.Invoices.Bootstrap\Mithril.Invoices.Bootstrap.csproj", "{53CCC3FA-258E-4C43-A5C4-D7B8E96EA781}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{69B16EBB-3C94-45B4-BB6E-5F0EBF761224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69B16EBB-3C94-45B4-BB6E-5F0EBF761224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69B16EBB-3C94-45B4-BB6E-5F0EBF761224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53CCC3FA-258E-4C43-A5C4-D7B8E96EA781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53CCC3FA-258E-4C43-A5C4-D7B8E96EA781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53CCC3FA-258E-4C43-A5C4-D7B8E96EA781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53CCC3FA-258E-4C43-A5C4-D7B8E96EA781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{57A5A0DE-8BCB-41AE-A3F1-2B04C90AFBD3} = {51CCB7C7-CF61-4952-A8EA-F2C316B98A6E}
 		{24A3AC35-6311-46CD-B635-36948C947967} = {51CCB7C7-CF61-4952-A8EA-F2C316B98A6E}
 		{69B16EBB-3C94-45B4-BB6E-5F0EBF761224} = {B5214091-CCCD-4AC4-9B26-8152E5CBC478}
+		{53CCC3FA-258E-4C43-A5C4-D7B8E96EA781} = {51CCB7C7-CF61-4952-A8EA-F2C316B98A6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2D6CC31-76D4-4888-B8E9-A32C8B11F9A7}

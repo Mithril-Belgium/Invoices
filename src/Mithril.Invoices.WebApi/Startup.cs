@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mithril.Invoices.Application.Core;
 using Mithril.Invoices.Application.InvoiceCreation;
+using Mithril.Invoices.Bootstrap;
 using Mithril.Invoices.Domain.Invoice;
 using Mithril.Invoices.Infrastructure;
 using Mithril.Invoices.Infrastructure.Bus;
@@ -41,28 +42,13 @@ namespace Mithril.Invoices.WebApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            Container container = new Container();
-
-            container.Options.DefaultLifestyle = new AsyncScopedLifestyle();
-
-            container.Register<IEventStore, Infrastructure.EventStore>();
-            container.Register(typeof(IReadAggregateRepository<,>), typeof(AggregateRepository<,>));
-            container.Register(typeof(IWriteAggregateRepository<,>), typeof(AggregateRepository<,>));
-
             var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
+            var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
 
-            container.Register<IEventStoreConnection>(() => EventStoreConnection.Create(new Uri(eventStoreUrl), Guid.NewGuid().ToString()));
-            container.Register(typeof(ICommandHandler<>), typeof(ICommandHandler<>).Assembly);
-            container.Register(typeof(IQueryHandler<,>), typeof(IQueryHandler<,>).Assembly);
-
+            var container = ContainerBuilder.GetContainer(eventStoreUrl, redisConnectionString);
             container.Register<InvoicesController>();
             container.Register<PingController>();
 
-            var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
-            container.Register<IRedisClientsManager>(() => new RedisManagerPool(redisConnectionString));
-            container.Register<ISubscriber<Invoice, Guid>, RedisInvoiceSubscriber>();
-            container.Collection.Register(typeof(ISubscriber<,>), typeof(ISubscriber<,>).Assembly);
-            container.Register<IMessageBus<Invoice, Guid>, MessageBus<Invoice, Guid>>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

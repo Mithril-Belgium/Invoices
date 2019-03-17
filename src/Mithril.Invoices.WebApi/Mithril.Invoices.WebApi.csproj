@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mithril.Invoices.Application\Mithril.Invoices.Application.csproj" />
-    <ProjectReference Include="..\Mithril.Invoices.Infrastructure\Mithril.Invoices.Infrastructure.csproj" />
+    <ProjectReference Include="..\Mithril.Invoices.Bootstrap\Mithril.Invoices.Bootstrap.csproj" />
   </ItemGroup>
 
 </Project>
