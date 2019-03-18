@@ -43,9 +43,9 @@ namespace Mithril.Invoices.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
-            var redisConnectionString = Configuration.GetValue<string>("ExternalServices:RedisUrl");
+            var mongoConnectionString = Configuration.GetValue<string>("ExternalServices:MongoUrl");
 
-            var container = ContainerBuilder.GetContainer(eventStoreUrl, redisConnectionString);
+            var container = ContainerBuilder.GetContainer(eventStoreUrl, mongoConnectionString);
             container.Register<InvoicesController>();
             container.Register<PingController>();
 
