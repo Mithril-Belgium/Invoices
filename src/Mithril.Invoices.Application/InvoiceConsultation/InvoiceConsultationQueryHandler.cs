@@ -10,16 +10,16 @@ namespace Mithril.Invoices.Application.InvoiceConsultation
 {
     public class InvoiceConsultationQueryHandler : IQueryHandler<InvoiceConsultationQuery, InvoiceConsultationModel>
     {
-        private readonly IReadAggregateRepository<Invoice, Guid> _repository;
+        private readonly IInvoiceConsultationRepository _repository;
 
-        public InvoiceConsultationQueryHandler(IReadAggregateRepository<Invoice, Guid> repository)
+        public InvoiceConsultationQueryHandler(IInvoiceConsultationRepository repository)
         {
             _repository = repository;
         }
 
         public async Task<InvoiceConsultationModel> ProcessAsync(InvoiceConsultationQuery query)
         {
-            var invoice = await _repository.GetByIdAsync(query.Id);
+            var invoice = await _repository.GetForConsultationByIdAsync(query.Id);
 
             return new InvoiceConsultationModel() {
                 Id = invoice.Id,
