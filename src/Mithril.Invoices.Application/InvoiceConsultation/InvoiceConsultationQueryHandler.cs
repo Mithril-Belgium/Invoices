@@ -19,12 +19,7 @@ namespace Mithril.Invoices.Application.InvoiceConsultation
 
         public async Task<InvoiceConsultationModel> ProcessAsync(InvoiceConsultationQuery query)
         {
-            var invoice = await _repository.GetForConsultationByIdAsync(query.Id);
-
-            return new InvoiceConsultationModel() {
-                Id = invoice.Id,
-                Version = invoice.Version
-            };
+            return await _repository.GetForConsultationByIdAsync(query.Id);
         }
     }
 }
