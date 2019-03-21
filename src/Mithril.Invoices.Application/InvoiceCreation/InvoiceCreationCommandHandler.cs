@@ -9,9 +9,9 @@ namespace Mithril.Invoices.Application.InvoiceCreation
 {
     public class InvoiceCreationCommandHandler : ICommandHandler<InvoiceCreationCommand>
     {
-        private readonly IAggregateRepository<Invoice, Guid> _invoiceRepository;
+        private readonly IWriteAggregateRepository<Invoice, Guid> _invoiceRepository;
 
-        public InvoiceCreationCommandHandler(IAggregateRepository<Invoice, Guid> invoiceRepository)
+        public InvoiceCreationCommandHandler(IWriteAggregateRepository<Invoice, Guid> invoiceRepository)
         {
             _invoiceRepository = invoiceRepository;
         }

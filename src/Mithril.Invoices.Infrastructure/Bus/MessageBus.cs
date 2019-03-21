@@ -27,11 +27,7 @@ namespace Mithril.Invoices.Infrastructure.Bus
 
         public async Task PublishAsync(TAggregate aggregate)
         {
-            var tasks = new List<Task>();
-            foreach(var subscriber in _subscribers)
-            {
-                tasks.Add(subscriber.NotifyAsync(aggregate));
-            }
+            var tasks = _subscribers.Select(s => s.NotifyAsync(aggregate));
 
             await Task.WhenAll(tasks);
         }

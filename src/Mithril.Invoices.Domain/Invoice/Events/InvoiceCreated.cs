@@ -1,7 +1,7 @@
 ﻿using Mithril.Invoices.Domain.Core;
 using System;
 
-namespace Mithril.Invoices.Domain.Invoice
+namespace Mithril.Invoices.Domain.Invoice.Events
 {
     public class InvoiceCreated : IDomainEvent
     {
@@ -10,11 +10,6 @@ namespace Mithril.Invoices.Domain.Invoice
         public InvoiceCreated(Guid id)
         {
             Id = id;
-        }
-
-        public InvoiceCreated()
-        {
-
         }
     }
 }

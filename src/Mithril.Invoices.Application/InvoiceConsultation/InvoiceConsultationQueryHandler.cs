@@ -10,24 +10,16 @@ namespace Mithril.Invoices.Application.InvoiceConsultation
 {
     public class InvoiceConsultationQueryHandler : IQueryHandler<InvoiceConsultationQuery, InvoiceConsultationModel>
     {
-        private readonly IRedisClientsManager _redisClientsManager;
+        private readonly IInvoiceConsultationRepository _repository;
 
-        public InvoiceConsultationQueryHandler(IRedisClientsManager redisClientsManager)
+        public InvoiceConsultationQueryHandler(IInvoiceConsultationRepository repository)
         {
-            _redisClientsManager = redisClientsManager;
+            _repository = repository;
         }
 
-        public Task<InvoiceConsultationModel> ProcessAsync(InvoiceConsultationQuery query)
+        public async Task<InvoiceConsultationModel> ProcessAsync(InvoiceConsultationQuery query)
         {
-            using (var client = _redisClientsManager.GetClient())
-            {
-                var invoice = client.Get<Invoice>(query.Id.ToString());
-
-                return Task.FromResult(new InvoiceConsultationModel() {
-                    Id = invoice.Id,
-                    Version = invoice.Version
-                });
-            }
+            return await _repository.GetForConsultationByIdAsync(query.Id);
         }
     }
 }

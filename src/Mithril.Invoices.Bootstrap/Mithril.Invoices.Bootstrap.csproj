@@ -5,16 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventStore.Client" Version="4.1.1" />
-    <PackageReference Include="JsonNet.PrivateSettersContractResolvers" Version="1.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="ServiceStack.Redis" Version="5.4.0" />
+    <PackageReference Include="SimpleInjector" Version="4.4.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mithril.Invoices.Application\Mithril.Invoices.Application.csproj" />
     <ProjectReference Include="..\Mithril.Invoices.Domain\Mithril.Invoices.Domain.csproj" />
+    <ProjectReference Include="..\Mithril.Invoices.Infrastructure\Mithril.Invoices.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
