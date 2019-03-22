@@ -54,10 +54,7 @@ namespace Mithril.Invoices.WebApi
 
             services.AddSingleton<IControllerActivator>(
                 new SimpleInjectorControllerActivator(container));
-            services.AddSingleton<IViewComponentActivator>(
-                new SimpleInjectorViewComponentActivator(container));
 
-            services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
