@@ -9,8 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="2.2.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.4.3" />
   </ItemGroup>
@@ -18,6 +20,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Mithril.Invoices.Application\Mithril.Invoices.Application.csproj" />
     <ProjectReference Include="..\Mithril.Invoices.Bootstrap\Mithril.Invoices.Bootstrap.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

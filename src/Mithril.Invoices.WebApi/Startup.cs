@@ -37,25 +37,33 @@ namespace Mithril.Invoices.WebApi
 
         public IConfiguration Configuration { get; }
 
+        private Container Container { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddLogging(lb =>
+            {
+                lb.ClearProviders();
+                lb.AddLog4Net();
+            });
+
             var eventStoreUrl = Configuration.GetValue<string>("ExternalServices:EventStoreUrl");
             var mongoConnectionString = Configuration.GetValue<string>("ExternalServices:MongoUrl");
 
-            var container = ContainerBuilder.GetContainer(eventStoreUrl, mongoConnectionString);
-            container.Register<InvoicesController>();
-            container.Register<PingController>();
-
+            Container = ContainerBuilder.GetContainer(eventStoreUrl, mongoConnectionString);
+            Container.Register<InvoicesController>();
+            Container.Register<PingController>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IControllerActivator>(
-                new SimpleInjectorControllerActivator(container));
+                new SimpleInjectorControllerActivator(Container));
 
-            services.UseSimpleInjectorAspNetRequestScoping(container);
+            services.UseSimpleInjectorAspNetRequestScoping(Container);
+            services.EnableSimpleInjectorCrossWiring(Container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +80,7 @@ namespace Mithril.Invoices.WebApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            Container.AutoCrossWireAspNetComponents(app);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Mithril.Invoices.Bootstrap
             var container = new Container();
 
             container.Options.DefaultLifestyle = new AsyncScopedLifestyle();
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             container.Register<IEventStore, Infrastructure.EventStore>();
             container.Register(typeof(IWriteAggregateRepository<,>), typeof(EventAggregateRepository<,>));
