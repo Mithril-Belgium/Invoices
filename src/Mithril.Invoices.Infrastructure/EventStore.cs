@@ -26,10 +26,10 @@ namespace Mithril.Invoices.Infrastructure
 
         }
 
-        public async Task<IDomainEvent[]> GetEventsAsync<TId>(TId id)
+        public async Task<IDomainEvent[]> GetEventsAsync<TId>(string category, TId id)
         {
             await Connect();
-            var readEvents = await _connection.ReadStreamEventsForwardAsync(id.ToString(), 0, 100, true);
+            var readEvents = await _connection.ReadStreamEventsForwardAsync($"{category}-{id}", 0, 100, true);
             return MapEvents(readEvents);
         }
 
@@ -51,12 +51,12 @@ namespace Mithril.Invoices.Infrastructure
             return domainEvents;
         }
 
-        public async Task SaveEventsAsync<TId>(TId id, IDomainEvent[] domainEvents)
+        public async Task SaveEventsAsync<TId>(string category, TId id, IDomainEvent[] domainEvents)
         {
             EventData[] events = MapEvents(domainEvents);
 
             await Connect();
-            await _connection.AppendToStreamAsync(id.ToString(), ExpectedVersion.Any, events);
+            await _connection.AppendToStreamAsync($"{category}-{id}", ExpectedVersion.Any, events);
         }
 
         private EventData[] MapEvents(IDomainEvent[] domainEvents)

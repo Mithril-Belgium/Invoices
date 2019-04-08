@@ -24,8 +24,8 @@ namespace Mithril.Invoices.Infrastructure
 
         public async Task SaveAsync(T aggregateRoot)
         {
-            await _eventStore.SaveEventsAsync(aggregateRoot.Id, 
-                aggregateRoot.PendingEvents.ToArray());
+            await _eventStore.SaveEventsAsync(typeof(T).Name,
+                aggregateRoot.Id, aggregateRoot.PendingEvents.ToArray());
 
             await _messageBus.PublishAsync(aggregateRoot);
 
@@ -39,7 +39,7 @@ namespace Mithril.Invoices.Infrastructure
                         null, new Type[0], new ParameterModifier[0])
                     .Invoke(new object[0]);
 
-            var domainEvents = await _eventStore.GetEventsAsync(id);
+            var domainEvents = await _eventStore.GetEventsAsync(typeof(T).Name, id);
 
             foreach(var domainEvent in domainEvents)
             {

@@ -6,8 +6,8 @@ namespace Mithril.Invoices.Infrastructure
 {
     public interface IEventStore : IDisposable
     {
-        Task<IDomainEvent[]> GetEventsAsync<TId>(TId id);
+        Task<IDomainEvent[]> GetEventsAsync<TId>(string category, TId id);
 
-        Task SaveEventsAsync<TId>(TId id, IDomainEvent[] events);
+        Task SaveEventsAsync<TId>(string category, TId id, IDomainEvent[] events);
     }
 }
